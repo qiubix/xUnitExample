@@ -1,3 +1,8 @@
+# TODO: Invoke tearDown even if the test method fails
+# TODO: Run multiple test
+# TODO: Catch and report setUp errors
+
+
 class TestCase:
 	def __init__(self, name):
 		self.name = name
@@ -9,8 +14,11 @@ class TestCase:
 		result = TestResult()
 		result.testStarted()
 		self.setUp()
-		method = getattr(self, self.name)
-		method()
+		try:
+			method = getattr(self, self.name)
+			method()
+		except:
+			result.testFailed()
 		self.tearDown()
 		return result
 
@@ -59,4 +67,4 @@ class TestCaseTest(TestCase):
 TestCaseTest("testTemplateMethod").run()
 TestCaseTest("testResult").run()
 TestCaseTest("testFailedResultFormatting").run()
-#TestCaseTest("testFailedResult").run()
+TestCaseTest("testFailedResult").run()
